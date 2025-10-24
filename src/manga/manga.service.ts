@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMangaDto } from './dto/create-manga.dto';
 import { UpdateMangaDto } from './dto/update-manga.dto';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { error } from 'console';
+import { exitCode } from 'process';
 
 
 @Injectable()
@@ -20,10 +22,21 @@ export class MangaService {
 
 
 
-  findOne(id: number) {
-    return this.prisma.manga.findUnique({
+  async findOne(id: number) {
+    const item = await this.prisma.manga.findUnique({
       where: { id },
     });
+
+    if (!item) {
+      throw  new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: `Object with Id ${id} does not exist`,
+      }, HttpStatus.NOT_FOUND, {
+        cause: error
+      });
+    }
+
+    return item;
   }
 
   update(id: number, updateMangaDto: UpdateMangaDto) {

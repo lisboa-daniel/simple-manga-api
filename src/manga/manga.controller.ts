@@ -21,7 +21,14 @@ export class MangaController {
   
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.mangaService.findOne(+id);
+    
+    try {
+      return await this.mangaService.findOne(+id);
+    } catch (err) {
+      throw err;
+    }
+         
+    
   }
 
   @Patch(':id')
