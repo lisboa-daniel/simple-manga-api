@@ -9,8 +9,14 @@ export class MangaController {
   constructor(private readonly mangaService: MangaService) {}
 
   @Post()
-  create(@Body() createMangaDto: CreateMangaDto) {
-    return this.mangaService.create(createMangaDto);
+  async create(@Body() createMangaDto: CreateMangaDto) {
+
+    try {
+      return this.mangaService.create(createMangaDto);
+    } catch (err) {
+      throw err;
+    }
+    
   }
 
   @Get()

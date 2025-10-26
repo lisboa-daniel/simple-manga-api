@@ -15,16 +15,63 @@ datasource db {
 
 
 model Manga {
-  id           Int      @id @default(autoincrement())
-  title        String   @unique
-  author  String
-  synopsis  String?
-  status String
-  tags String[]
-  demographic String
+  id            Int             @id @default(autoincrement())
+  title         String          @unique
+  author        String
+  synopsis      String?
+  status        String
+  tags          String[]
+  demographic   String
   serialization String
-  picture String
-  ISBN String
+  picture       String
+  ISBN          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  reads         Read[]
+  bookmarkEntries BookmarkEntry[]
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  reads     Read[]
+  bookmarks Bookmark[]
+}
+
+model Read {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  titleId      Int
+  manga        Manga    @relation(fields: [titleId], references: [id])
+  chaptersRead Int
+  volumesRead  Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@unique([userId, titleId])
+}
+
+model Bookmark {
+  id        Int             @id @default(autoincrement())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  name      String
+  entries   BookmarkEntry[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model BookmarkEntry {
+  id         Int      @id @default(autoincrement())
+  listId     Int
+  bookmark   Bookmark @relation(fields: [listId], references: [id])
+  titleId    Int
+  manga      Manga    @relation(fields: [titleId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@unique([listId, titleId])
 }

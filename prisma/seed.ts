@@ -26,6 +26,24 @@ async function main() {
       });
       console.log(`Seeded: ${created.title}`);
     }
+
+
+   const userData = JSON.parse(fs.readFileSync('./User.json', 'utf-8'));
+
+    for (const user of userData) {
+      const created = await prisma.user.upsert({
+        where: { name: user.name},
+        update: {},
+        create: {
+          name: user.name,
+          email: user.email,
+          password: user.password
+        },
+      });
+      console.log(`Seeded: ${created.name}`);
+    }
+  
+
   } catch (err){
     throw err;
   }
