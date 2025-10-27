@@ -3,13 +3,17 @@ import { ReadService } from './read.service';
 import { CreateReadDto } from './dto/create-read.dto';
 import { UpdateReadDto } from './dto/update-read.dto';
 
-@Controller('read')
+@Controller('api/read')
 export class ReadController {
   constructor(private readonly readService: ReadService) {}
 
   @Post()
-  create(@Body() createReadDto: CreateReadDto) {
-    return this.readService.create(createReadDto);
+  async create(@Body() createReadDto: CreateReadDto) {
+    try {
+      return await this.readService.create(createReadDto);
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Get()
@@ -18,8 +22,12 @@ export class ReadController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.readService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.readService.findOne(+id);
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Patch(':id')

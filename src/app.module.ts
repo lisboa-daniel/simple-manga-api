@@ -6,11 +6,12 @@ import { MangaModule } from './manga/manga.module';
 import { UserModule } from './user/user.module';
 import { ReadModule } from './read/read.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
-import { BookmarkEntryModule } from './bookmark-entry/bookmark-entry.module';
+import { BookmarkentryModule } from './bookmarkentry/bookmarkentry.module';
+
 
 
 @Module({
-  imports: [PrismaModule, MangaModule, UserModule, ReadModule, BookmarkModule, BookmarkEntryModule],
+  imports: [PrismaModule, MangaModule, UserModule, ReadModule, BookmarkModule, BookmarkentryModule, BookmarkentryModule],
   controllers: [AppController],
   providers: [AppService],
 })
