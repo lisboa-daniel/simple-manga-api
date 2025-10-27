@@ -70,6 +70,32 @@ export class UserService {
     }
   }
 
+
+  async login(email: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: `User with email ${email} not found`,
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return user;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new BadRequestException('Invalid user ID format');
+      }
+      throw new InternalServerErrorException('Failed to find user');
+    }
+  }
+
   // ✅ UPDATE USER
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {

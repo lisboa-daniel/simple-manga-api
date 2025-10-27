@@ -21,6 +21,13 @@ export class BookmarkController {
     return this.bookmarkService.findAll();
   }
 
+  
+  @Get('/user/:id')
+  findAllByUserId(@Param('id') id : string) {
+    return this.bookmarkService.findAllByUserId(id);
+  }
+
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -29,6 +36,8 @@ export class BookmarkController {
       throw err;
     }
   }
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBookmarkDto: UpdateBookmarkDto) {

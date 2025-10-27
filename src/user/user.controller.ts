@@ -64,4 +64,15 @@ export class UserController {
       throw err;
     }
   }
+
+  @Get('/login/:email')
+  async login(@Param('email') email: string) {
+    try {
+      return await this.userService.login(email);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
+
+

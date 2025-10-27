@@ -44,6 +44,24 @@ export class BookmarkService {
     return item;
   }
 
+  async findAllByUserId(userId: string) {
+    const items = await this.prisma.bookmark.findMany({
+      where: { userId }, 
+    });
+  
+    if (!items || items.length === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `No bookmarks found for userId ${userId}`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  
+    return items;
+  }
+
   update(id: number, updateBookmarkDto: UpdateBookmarkDto) {
     return this.prisma.bookmark.update({
       where: { id },
@@ -56,4 +74,6 @@ export class BookmarkService {
       where: { id },
     });
   }
+
+
 }
